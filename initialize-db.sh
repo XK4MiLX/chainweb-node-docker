@@ -51,7 +51,6 @@ else
   retry=0
   file_lenght=0
   while [[ "$file_lenght" -lt "10000000000" && "$retry" -lt 6 ]]; do
-    BOOTSTRAP_LENGTH=${#BOOTSTRAPLOCATIONS[@]}
     index=$(shuf -i 0-$(($BOOTSTRAP_LENGTH-1)) -n 1)
     echo "Testing bootstrap location ${BOOTSTRAPLOCATIONS[$index]}"
     file_lenght=$(curl -sI -m 5 ${BOOTSTRAPLOCATIONS[$index]} | egrep 'Content-Length|content-length' | sed 's/[^0-9]*//g')
