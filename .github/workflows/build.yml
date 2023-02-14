@@ -27,7 +27,6 @@ jobs:
         env:
           repository: '${{ github.repository }}'
       - name: Get revision
-        shell: bash
         run: |
           REVISION=$(curl --silent "https://api.github.com/repos/kadena-io/chainweb-node/releases/latest" | jq -r .assets[0].name | grep -oP '(?<=.)\w+(?=.tar)')
           echo "REVISION=$REVISION"  >> $GITHUB_ENV
