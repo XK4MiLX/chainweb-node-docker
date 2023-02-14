@@ -31,4 +31,4 @@ jobs:
         with:
           push: true
           tags: ${{ env.repository }}:latest
-          build-args: REVISION=${{evn.REVISION}}
+          build-args: REVISION=${{env.REVISION}}
