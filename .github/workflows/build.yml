@@ -28,8 +28,7 @@ jobs:
           repository: '${{ github.repository }}'
       - name: Get revision
         run: |
-          REVISION=$(curl --silent "https://api.github.com/repos/kadena-io/chainweb-node/releases/latest" | jq -r .assets[0].name | grep -oP '(?<=.)\w+(?=.tar)')
-          echo "REVISION=$REVISION"  >> $GITHUB_ENV
+          echo "REVISION=$(curl --silent "https://api.github.com/repos/kadena-io/chainweb-node/releases/latest" | jq -r .assets[0].name | grep -oP '(?<=.)\w+(?=.tar)')" >> $GITHUB_ENV
       - uses: docker/build-push-action@v3
         with:
           push: true
