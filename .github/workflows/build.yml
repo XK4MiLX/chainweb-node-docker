@@ -24,8 +24,9 @@ jobs:
       - name: Set lower case repository name
         shell: bash
         run: |
+          REVISION=$(curl --silent "https://api.github.com/repos/kadena-io/chainweb-node/releases/latest" | jq -r .assets[0].name | grep -oP '(?<=.)\w+(?=.tar)')"
           echo "repository=${repository,,}" >> $GITHUB_ENV
-          echo "REVISION=$(curl --silent "https://api.github.com/repos/kadena-io/chainweb-node/releases/latest" | jq -r .assets[0].name | grep -oP '(?<=.)\w+(?=.tar)')" >> $GITHUB_ENV
+          echo "REVISION=$REVISION"  >> $GITHUB_ENV
         env:
           repository: '${{ github.repository }}'
       - uses: docker/build-push-action@v3
