@@ -23,7 +23,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}  
       - name: Set lower case repository name
         shell: bash
-        run: |
+        run: >-
           REVISION=$(curl --silent "https://api.github.com/repos/kadena-io/chainweb-node/releases/latest" | jq -r .assets[0].name | grep -oP '(?<=.)\w+(?=.tar)')
           echo "repository=${repository,,}" >> $GITHUB_ENV
           echo "REVISION=$REVISION"  >> $GITHUB_ENV
