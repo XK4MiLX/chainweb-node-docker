@@ -23,12 +23,15 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}  
       - name: Set lower case repository name
         shell: bash
-        run: >-
-          REVISION=$(curl --silent "https://api.github.com/repos/kadena-io/chainweb-node/releases/latest" | jq -r .assets[0].name | grep -oP '(?<=.)\w+(?=.tar)')
+        run: |
           echo "repository=${repository,,}" >> $GITHUB_ENV
-          echo "REVISION=$REVISION"  >> $GITHUB_ENV
         env:
           repository: '${{ github.repository }}'
+      - name: Get revision
+        shell: bash
+        run: |
+          REVISION=$(curl --silent "https://api.github.com/repos/kadena-io/chainweb-node/releases/latest" | jq -r .assets[0].name | grep -oP '(?<=.)\w+(?=.tar)')
+          echo "REVISION=$REVISION"  >> $GITHUB_ENV
       - uses: docker/build-push-action@v3
         with:
           push: true
