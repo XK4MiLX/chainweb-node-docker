@@ -2,14 +2,7 @@
 # Run as
 # --ulimit nofile=64000:64000
 # BUILD PARAMTERS
-ARG UBUNTUVER=20.04
-FROM ubuntu:${UBUNTUVER}
-ARG GHCVER=8.10.7
-ARG REVISION
-ARG UBUNTUVER
-LABEL revision="$REVISION"
-LABEL ghc="$GHCVER"
-LABEL ubuntu="$UBUNTUVER"
+FROM ubuntu:20.04
 # install prerequisites
 RUN apt-get update \
     && apt-get install -y libtbb2 libgflags2.2 libsnappy1v5 curl xxd openssl binutils locales jq \
@@ -19,8 +12,8 @@ RUN apt-get update \
 ENV LANG=en_US.UTF-8
 # Install chainweb applications
 WORKDIR /chainweb
-# RUN curl -Ls "https://github.com/kadena-io/chainweb-node/releases/download/<chaineweb-version>/<chainweb-binary-version>" | tar -xzC "/chainweb/"
-RUN curl -Ls "https://kadena-cabal-cache.s3.amazonaws.com/chainweb-node/chainweb.${GHCVER}.ubuntu-${UBUNTUVER}.${REVISION}.tar.gz" | tar -xzC "/"
+RUN PACKAGE=$(curl --silent "https://api.github.com/repos/kadena-io/chainweb-node/releases/latest" | jq -r .assets[0].name | sed 's/-2.18.ghc-/./g') && \\
+curl -Ls "https://kadena-cabal-cache.s3.amazonaws.com/chainweb-node/${PACKAGE}" | tar -xzC "/"
 COPY check-reachability.sh .
 COPY run-chainweb-node.sh .
 COPY initialize-db.sh .
