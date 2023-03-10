@@ -12,9 +12,9 @@ RUN apt-get update \
 ENV LANG=en_US.UTF-8
 # Install chainweb applications
 WORKDIR /chainweb
-RUN PACKAGE=$(curl --silent "https://api.github.com/repos/kadena-io/chainweb-node/releases/latest" | jq -r .assets[0].name | sed 's/-2.18.ghc-/./g') && \
-echo "Downloading file: https://kadena-cabal-cache.s3.amazonaws.com/chainweb-node/${PACKAGE}" && \
-curl -Ls "https://kadena-cabal-cache.s3.amazonaws.com/chainweb-node/${PACKAGE}" | tar -xzC "/"
+RUN PACKAGE=$(curl --silent "https://api.github.com/repos/kadena-io/chainweb-node/releases/latest" | jq -r .assets[0].browser_download_url) && \
+echo "Downloading file: ${PACKAGE}" && \
+curl -Ls "${PACKAGE}" | tar -xzC "/"
 COPY check-reachability.sh .
 COPY run-chainweb-node.sh .
 COPY initialize-db.sh .
