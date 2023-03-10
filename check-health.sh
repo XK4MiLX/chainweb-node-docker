@@ -7,5 +7,7 @@ CURRENT_NODE_HEIGHT=$(curl -fsLk "https://localhost:$CHAINWEB_P2P_PORT/chainweb/
 if ! egrep -o "^[0-9]+$" <<< "$CURRENT_NODE_HEIGHT" &>/dev/null; then
   echo "Kadena daemon not responding...."
   exit 1
+else
+  echo "Kadena Node Height: $CURRENT_NODE_HEIGHT"
 fi
 
