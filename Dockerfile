@@ -14,7 +14,7 @@ ENV LANG=en_US.UTF-8
 WORKDIR /chainweb
 RUN PACKAGE=$(curl --silent "https://api.github.com/repos/kadena-io/chainweb-node/releases/latest" | jq -r .assets[0].browser_download_url) && \
 echo "Downloading file: ${PACKAGE}" && \
-curl -Ls "${PACKAGE}" | tar -xzC "/"
+curl -Ls "${PACKAGE}" | tar -xz
 COPY check-reachability.sh .
 COPY run-chainweb-node.sh .
 COPY initialize-db.sh .
