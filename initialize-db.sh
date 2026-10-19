@@ -45,12 +45,12 @@ if [ -d $DBDIR ]; then
   echo "Directory $DBDIR already exists, we will not download any bootstrap, if you want to download the bootstrap you need to delete chainweb-db folder first"
 else
   echo "$DBDIR does not exists, lets download the bootstrap"
-  # Getting Kadena bootstrap from Zel Servers
-  BOOTSTRAPLOCATIONS[0]="https://fluxnodeservice.com/kda_bootstrap.tar.gz"
+  # No Kadena bootstrap source left (the old host lapsed), so the node syncs from peers
+  BOOTSTRAPLOCATIONS=()
   BOOTSTRAP_LENGTH=${#BOOTSTRAPLOCATIONS[@]}
   retry=0
   file_lenght=0
-  while [[ "$file_lenght" -lt "10000000000" && "$retry" -lt 6 ]]; do
+  while [[ "$BOOTSTRAP_LENGTH" -gt 0 && "$file_lenght" -lt "10000000000" && "$retry" -lt 6 ]]; do
     index=$(shuf -i 0-$(($BOOTSTRAP_LENGTH-1)) -n 1)
     echo "Testing bootstrap location ${BOOTSTRAPLOCATIONS[$index]}"
     file_lenght=$(curl -sI -m 5 ${BOOTSTRAPLOCATIONS[$index]} | egrep 'Content-Length|content-length' | sed 's/[^0-9]*//g')
